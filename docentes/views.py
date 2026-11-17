@@ -8,7 +8,7 @@ from .forms import DocenteForm
 class CrearDocenteView(CreateView):
     model = Docente
     form_class = DocenteForm
-    success_url = '/docentes/'
+    success_url = '/docentes/'+
     template_name = 'docentes/form.html'
 
 
