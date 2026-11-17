@@ -19,7 +19,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-from docentes.views import CrearDocenteView, ListarDocenteView, EditarDocenteView, EliminarDocenteView, prueba
+from docentes.views import CrearDocenteView, ListarDocenteView, EditarDocenteView, EliminarDocenteView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
