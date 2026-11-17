@@ -1,40 +1,39 @@
-from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Docente
+from .forms import DocenteForm
 
-# Create your views here.
+def home(request):
+    return render(request, 'home.html')
 
-class prueba(TemplateView):
-    template_name = 'docentes/prueba.html'
+def lista_docentes(request):
+    docentes = Docente.objects.all()
+    return render(request, 'docentes/lista.html', {'docentes': docentes})
 
+def crear_docente(request):
+    if request.method == 'POST':
+        form = DocenteForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_docentes')
+    else:
+        form = DocenteForm()
+    return render(request, 'docentes/form.html', {'form': form})
 
-# Logica de negocio para crear un nuevo docente
-class CrearDocenteView(CreateView):
-    model = Docente
-    template_name = 'docentes/crear_docente.html'
-    fields = "__all__"
-    success_url = reverse_lazy('listar_docentes')
+def editar_docente(request, id):
+    docente = get_object_or_404(Docente, id=id)
+    if request.method == 'POST':
+        form = DocenteForm(request.POST, request.FILES, instance=docente)
+        if form.is_valid():
+            form.save()
+            return redirect('lista_docentes')
+    else:
+        form = DocenteForm(instance=docente)
+    return render(request, 'docentes/form.html', {'form': form})
 
+def eliminar_docente(request, id):
+    docente = get_object_or_404(Docente, id=id)
+    if request.method == 'POST':
+        docente.delete()
+        return redirect('lista_docentes')
+    return render(request, 'docentes/eliminar.html', {'docente': docente})
 
-# Logica de negocio para listar los docentes
-class ListarDocenteView(ListView):
-    model = Docente
-    template_name = 'docentes/listar_docentes.html'
-    context_object_name = 'docentes'
-    ordering = ['apellido', 'nombre']
-
-
-# Logica de negocio para editar un docente
-class EditarDocenteView(UpdateView):
-    model = Docente
-    template_name = 'docentes/editar_docente.html'
-    fields = "__all__"
-    success_url = reverse_lazy('listar_docentes')
-
-
-# Logica de negocio para eliminar un docente
-class EliminarDocenteView(DeleteView):
-    model = Docente
-    template_name = 'docentes/eliminar_docente.html'
-    context_object_name = 'docente'
-    success_url = reverse_lazy('listar_docentes')
