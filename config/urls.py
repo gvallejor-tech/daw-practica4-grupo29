@@ -19,8 +19,15 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
+from docentes.views import CrearDocenteView, ListarDocenteView, EditarDocenteView, EliminarDocenteView, prueba
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('docentes.urls')),
-    path('cursos/', include('materias.urls')),
+    path('', include('materias.urls')),
+    path('prueba/', prueba.as_view(), name='prueba'),
+    path('addDocente/', CrearDocenteView.as_view(), name='agregar_docente'),
+    path('docentes/', ListarDocenteView.as_view(), name='listar_docentes'),
+    path('editDocente/<int:pk>/', EditarDocenteView.as_view(), name='editar_docente'),
+    path('deleteDocente/<int:pk>/', EliminarDocenteView.as_view(), name='eliminar_docente'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
