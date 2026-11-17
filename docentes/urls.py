@@ -9,4 +9,3 @@ urlpatterns = [
     path('docentes/eliminar/<int:pk>/', EliminarDocenteView.as_view(), name='eliminar_docente'),
 ]
 
-]
